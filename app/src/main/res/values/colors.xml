@@ -3,4 +3,6 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="roundedTextBg">#554fC3f7</color>
+    <color name="roundedTextBorder">#DD0277BD</color>
 </resources>

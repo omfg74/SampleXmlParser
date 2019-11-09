@@ -86,7 +86,6 @@ class XmlParser(
         var sb = SpannableStringBuilder()
         when (chunk.tag) {
             "em" -> {
-
                 sb = emSpan(sb, chunk, textSize)
             }
             "br" -> {
