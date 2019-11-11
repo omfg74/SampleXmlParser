@@ -31,7 +31,10 @@ import androidx.core.graphics.withTranslation
  */
 class RoundedBgTextView : AppCompatTextView {
 
+    private var fontSize: Float = 0f
     private val textRoundedBgHelper: TextRoundedBgHelper
+    private var bgrColor = 0
+
 
     @JvmOverloads
     constructor(
@@ -48,9 +51,11 @@ class RoundedBgTextView : AppCompatTextView {
             drawableMid = attributeReader.drawableMid,
             drawableRight = attributeReader.drawableRight,
             bgrColor = attributeReader.bgroundColor,
-            fontSize = sp(attributeReader.fontSize)
+//            fontSize = sp(attributeReader.fontSize)
+            fontSize = this@RoundedBgTextView.textSize
         )
     }
+
 
     override fun onDraw(canvas: Canvas) {
         // need to draw bg first so that text can be on top during super.onDraw()

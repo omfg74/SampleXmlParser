@@ -10,10 +10,7 @@ import kotlin.math.roundToInt
 
 
 class SpannableBackground(
-    private val backgroundColor: String,
-    private val cornerRadius: Float,
-    private val textColor: String,
-    private val textSize: Float
+     val backgroundColor: String
 ) : SpannableString("") {
 //    override fun getSize(
 //        paint: Paint,

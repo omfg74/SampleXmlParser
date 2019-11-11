@@ -17,7 +17,6 @@ import java.io.StringReader
 
 class XmlParser(
     private val context: Context,
-    private val textSize: Float,
     private val linkColor: Int
 ) {
     companion object {
@@ -86,7 +85,7 @@ class XmlParser(
         var sb = SpannableStringBuilder()
         when (chunk.tag) {
             "em" -> {
-                sb = emSpan(sb, chunk, textSize)
+                sb = emSpan(sb, chunk)
             }
             "br" -> {
                 sb.append("\n")
@@ -111,8 +110,8 @@ class XmlParser(
 
     private fun emSpan(
         sb: SpannableStringBuilder,
-        chunk: TextChunk,
-        textSize: Float
+        chunk: TextChunk
+
     ): SpannableStringBuilder {
         if ((chunk.text?.length ?: 0) < SHORT_WORD) {
             chunk.text = " " + chunk.text + "  "
@@ -120,7 +119,7 @@ class XmlParser(
         chunk.text = " " + chunk.text + " "
         sb.append(chunk.text)
         sb.setSpan(
-            SpannableBackground(chunk.attr?.get("color") ?: "#FFFFFF", 0f, "#FFFFFF", textSize),
+            SpannableBackground(chunk.attr?.get("color") ?: "#FFFFFF"),
             0,
             (chunk.text?.length) ?: 0,
             Spanned.SPAN_INTERMEDIATE

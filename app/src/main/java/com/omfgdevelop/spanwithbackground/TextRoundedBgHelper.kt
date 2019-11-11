@@ -16,9 +16,11 @@
 package com.omfgdevelop.spanwithbackground
 
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.text.Layout
 import android.text.Spanned
+import android.widget.TextView
 
 /**
  * Helper class to draw multi-line rounded background to certain parts of a text. The start/end
@@ -85,12 +87,14 @@ class TextRoundedBgHelper(
         // ideally the calculations here should be cached since they are not cheap. However, proper
         // invalidation of the cache is required whenever anything related to text has changed.
         val spans = text.getSpans(0, text.length, SpannableBackground::class.java)
+
         spans.forEach { span ->
 //            if (span.equals("rounded")) {
                 val spanStart = text.getSpanStart(span)
                 val spanEnd = text.getSpanEnd(span)
                 val startLine = layout.getLineForOffset(spanStart)
                 val endLine = layout.getLineForOffset(spanEnd)
+
 
                 // start can be on the left or on the right depending on the language direction.
                 val startOffset = (layout.getPrimaryHorizontal(spanStart)
@@ -100,7 +104,7 @@ class TextRoundedBgHelper(
                     + layout.getParagraphDirection(endLine) * horizontalPadding).toInt()
 
                 val renderer = if (startLine == endLine) singleLineRenderer else multiLineRenderer
-                renderer.draw(canvas, layout, startLine, endLine, startOffset, endOffset)
+                renderer.draw(canvas, layout, startLine, endLine, startOffset, endOffset, Color.parseColor( (span as SpannableBackground).backgroundColor) )
 //            }
         }
     }

@@ -53,7 +53,8 @@ internal abstract class TextRoundedBgRenderer(
         startLine: Int,
         endLine: Int,
         startOffset: Int,
-        endOffset: Int
+        endOffset: Int,
+         bgrColor:Int
     )
 
     /**
@@ -103,7 +104,10 @@ internal class SingleLineRenderer(
         startLine: Int,
         endLine: Int,
         startOffset: Int,
-        endOffset: Int
+        endOffset: Int,
+        bgrColor:Int
+
+
     ) {
 
         val lineTop = getLineTop(layout, startLine)
@@ -148,7 +152,8 @@ internal class MultiLineRenderer(
         startLine: Int,
         endLine: Int,
         startOffset: Int,
-        endOffset: Int
+        endOffset: Int,
+        bgrColor:Int
     ) {
         // draw the first line
         val paragDir = layout.getParagraphDirection(startLine)
@@ -160,7 +165,7 @@ internal class MultiLineRenderer(
 
         var lineBottom = getLineBottom(layout, startLine)
         var lineTop = getLineTop(layout, startLine)
-        drawStart(canvas, startOffset, lineTop, lineEndOffset, lineBottom)
+        drawStart(canvas, startOffset, lineTop, lineEndOffset, lineBottom,bgrColor)
 
         // for the lines in the middle draw the mid drawable
         for (line in startLine + 1 until endLine) {
@@ -185,7 +190,7 @@ internal class MultiLineRenderer(
         lineBottom = getLineBottom(layout, endLine)
         lineTop = getLineTop(layout, endLine)
 
-        drawEnd(canvas, lineStartOffset, lineTop, endOffset, lineBottom)
+        drawEnd(canvas, lineStartOffset, lineTop, endOffset, lineBottom, bgrColor)
 
     }
 
@@ -198,7 +203,14 @@ internal class MultiLineRenderer(
      * @param end end coordinate for the background
      * @param bottom bottom coordinate for the background
      */
-    private fun drawStart(canvas: Canvas, start: Int, top: Int, end: Int, bottom: Int) {
+    private fun drawStart(
+        canvas: Canvas,
+        start: Int,
+        top: Int,
+        end: Int,
+        bottom: Int,
+        bgrColor: Int
+    ) {
 //        if (start > end) {
 //            drawableRight.setBounds(end, top, start, bottom)
 //            drawableRight.draw(canvas)
@@ -220,7 +232,14 @@ internal class MultiLineRenderer(
      * @param end end coordinate for the background
      * @param bottom bottom coordinate for the background
      */
-    private fun drawEnd(canvas: Canvas, start: Int, top: Int, end: Int, bottom: Int) {
+    private fun drawEnd(
+        canvas: Canvas,
+        start: Int,
+        top: Int,
+        end: Int,
+        bottom: Int,
+        bgrColor: Int
+    ) {
 //        if (start > end) {
 //            drawableLeft.setBounds(end, top, start, bottom)
 //            drawableLeft.draw(canvas)
