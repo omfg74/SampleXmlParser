@@ -22,6 +22,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.withTranslation
 
+
 /**
  * A TextView that can draw rounded background to the portions of the text. See
  * [TextRoundedBgHelper] for more information.
@@ -45,7 +46,9 @@ class RoundedBgTextView : AppCompatTextView {
             drawable = attributeReader.drawable,
             drawableLeft = attributeReader.drawableLeft,
             drawableMid = attributeReader.drawableMid,
-            drawableRight = attributeReader.drawableRight
+            drawableRight = attributeReader.drawableRight,
+            bgrColor = attributeReader.bgroundColor,
+            fontSize = sp(attributeReader.fontSize)
         )
     }
 
@@ -58,4 +61,12 @@ class RoundedBgTextView : AppCompatTextView {
         }
         super.onDraw(canvas)
     }
+
+    fun dp(int:Int):Float{
+        return (resources.displayMetrics.density*int)
+    }
+    fun sp(int:Int): Float {
+        return (resources.displayMetrics.scaledDensity*int)
+    }
+
 }

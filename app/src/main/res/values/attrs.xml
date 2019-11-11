@@ -22,5 +22,7 @@
         <attr name="roundedTextDrawableLeft" format="reference"/>
         <attr name="roundedTextDrawableMid" format="reference"/>
         <attr name="roundedTextDrawableRight" format="reference"/>
+        <attr name="fontSize" format="integer"/>
+        <attr name="bgrColor" format="color"/>
     </declare-styleable>
 </resources>

@@ -17,7 +17,6 @@ package com.omfgdevelop.spanwithbackground
 
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.text.Annotation
 import android.text.Layout
 import android.text.Spanned
 
@@ -48,14 +47,18 @@ class TextRoundedBgHelper(
     drawable: Drawable,
     drawableLeft: Drawable,
     drawableMid: Drawable,
-    drawableRight: Drawable
+    drawableRight: Drawable,
+    bgrColor:Int,
+    fontSize: Float
 ) {
 
     private val singleLineRenderer: TextRoundedBgRenderer by lazy {
         SingleLineRenderer(
             horizontalPadding = horizontalPadding,
             verticalPadding = verticalPadding,
-            drawable = drawable
+            drawable = drawable,
+            bgrColor = bgrColor,
+            fontSize = fontSize
         )
     }
 
@@ -65,7 +68,9 @@ class TextRoundedBgHelper(
             verticalPadding = verticalPadding,
             drawableLeft = drawableLeft,
             drawableMid = drawableMid,
-            drawableRight = drawableRight
+            drawableRight = drawableRight,
+            bgrColor = bgrColor,
+            fontSize = fontSize
         )
     }
 
