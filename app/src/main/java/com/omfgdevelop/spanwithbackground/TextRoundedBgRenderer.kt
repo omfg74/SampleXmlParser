@@ -36,6 +36,7 @@ internal abstract class TextRoundedBgRenderer(
     private val fontSize: Float
 ) {
 
+    companion object val extraPadding = 3
     /**
      * Draw the background that starts at the {@code startOffset} and ends at {@code endOffset}.
      *
@@ -114,7 +115,7 @@ internal class SingleLineRenderer(
         val right = max(startOffset, endOffset)
         val paint = Paint()
         paint.color = bgrColor
-        canvas.drawRect(Rect(left, lineTop, right, lineBottom), paint)
+        canvas.drawRect(Rect(left-extraPadding, lineTop, right+extraPadding, lineBottom), paint)
     }
 }
 
@@ -199,7 +200,7 @@ internal class MultiLineRenderer(
     ) {
         val paint = Paint()
         paint.color = bgrColor
-        canvas.drawRect(Rect(start, top, end, bottom), paint)
+        canvas.drawRect(Rect(start+extraPadding, top, end, bottom), paint)
     }
 
     /**
@@ -221,6 +222,6 @@ internal class MultiLineRenderer(
     ) {
         val paint = Paint()
         paint.color = bgrColor
-        canvas.drawRect(Rect(start, top, end, bottom), paint)
+        canvas.drawRect(Rect(start, top, end+extraPadding, bottom), paint)
     }
 }

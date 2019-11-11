@@ -113,9 +113,8 @@ class XmlParser(
 
     ): SpannableStringBuilder {
         if ((chunk.text?.length ?: 0) < SHORT_WORD) {
-            chunk.text = " " + chunk.text + "  "
+            chunk.text =  chunk.text + " "
         }
-        chunk.text = " " + chunk.text + " "
         sb.append(chunk.text)
         sb.setSpan(
             SpannableBackground(chunk.attr?.get("color") ?: "#FFFFFF"),
