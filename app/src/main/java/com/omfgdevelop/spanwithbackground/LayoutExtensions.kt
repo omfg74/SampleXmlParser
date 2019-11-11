@@ -42,7 +42,7 @@ fun Layout.getLineBottomWithoutSpacing(line: Int): Int {
     val lineSpacingExtra = spacingAdd
     val lineSpacingMultiplier = spacingMultiplier
     val hasLineSpacing = lineSpacingExtra != DEFAULT_LINESPACING_EXTRA
-        || lineSpacingMultiplier != DEFAULT_LINESPACING_MULTIPLIER
+            || lineSpacingMultiplier != DEFAULT_LINESPACING_MULTIPLIER
 
     if (!hasLineSpacing || isLastLine && lastLineSpacingNotAdded) {
         lineBottomWithoutSpacing = lineBottom

@@ -23,8 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_span2"
-        app:fontSize="0"
-        app:bgrColor="#ff00ff"
         >
 
     </com.omfgdevelop.spanwithbackground.RoundedBgTextView>

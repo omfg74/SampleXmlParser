@@ -31,7 +31,7 @@ import androidx.core.content.res.getDrawableOrThrow
  * - chDrawableMid: the drawable used to draw for whole line
  * - chDrawableRight: the drawable used to draw right edge of the background
  */
-class TextRoundedBgAttributeReader (context: Context, attrs: AttributeSet?) {
+class TextRoundedBgAttributeReader(context: Context, attrs: AttributeSet?) {
 
     val horizontalPadding: Int
     val verticalPadding: Int
@@ -40,7 +40,7 @@ class TextRoundedBgAttributeReader (context: Context, attrs: AttributeSet?) {
     val drawableMid: Drawable
     val drawableRight: Drawable
     val bgroundColor: Int
-    val fontSize:Int
+    val fontSize: Int
 
     init {
         val typedArray = context.obtainStyledAttributes(
@@ -69,8 +69,8 @@ class TextRoundedBgAttributeReader (context: Context, attrs: AttributeSet?) {
         drawableRight = typedArray.getDrawableOrThrow(
             R.styleable.TextRoundedBgHelper_roundedTextDrawableRight
         )
-        bgroundColor = typedArray.getColor(R.styleable.TextRoundedBgHelper_bgrColor,0)
-        fontSize = typedArray.getInt(R.styleable.TextRoundedBgHelper_fontSize,14)
+        bgroundColor = typedArray.getColor(R.styleable.TextRoundedBgHelper_bgrColor, 0)
+        fontSize = typedArray.getInt(R.styleable.TextRoundedBgHelper_fontSize, 14)
 
         typedArray.recycle()
     }

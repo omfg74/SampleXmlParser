@@ -20,7 +20,6 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.text.Layout
 import android.text.Spanned
-import android.widget.TextView
 
 /**
  * Helper class to draw multi-line rounded background to certain parts of a text. The start/end
@@ -50,7 +49,6 @@ class TextRoundedBgHelper(
     drawableLeft: Drawable,
     drawableMid: Drawable,
     drawableRight: Drawable,
-    bgrColor:Int,
     fontSize: Float
 ) {
 
@@ -59,7 +57,6 @@ class TextRoundedBgHelper(
             horizontalPadding = horizontalPadding,
             verticalPadding = verticalPadding,
             drawable = drawable,
-            bgrColor = bgrColor,
             fontSize = fontSize
         )
     }
@@ -71,7 +68,6 @@ class TextRoundedBgHelper(
             drawableLeft = drawableLeft,
             drawableMid = drawableMid,
             drawableRight = drawableRight,
-            bgrColor = bgrColor,
             fontSize = fontSize
         )
     }
@@ -89,23 +85,28 @@ class TextRoundedBgHelper(
         val spans = text.getSpans(0, text.length, SpannableBackground::class.java)
 
         spans.forEach { span ->
-//            if (span.equals("rounded")) {
-                val spanStart = text.getSpanStart(span)
-                val spanEnd = text.getSpanEnd(span)
-                val startLine = layout.getLineForOffset(spanStart)
-                val endLine = layout.getLineForOffset(spanEnd)
+            val spanStart = text.getSpanStart(span)
+            val spanEnd = text.getSpanEnd(span)
+            val startLine = layout.getLineForOffset(spanStart)
+            val endLine = layout.getLineForOffset(spanEnd)
 
 
-                // start can be on the left or on the right depending on the language direction.
-                val startOffset = (layout.getPrimaryHorizontal(spanStart)
+            // start can be on the left or on the right depending on the language direction.
+            val startOffset = (layout.getPrimaryHorizontal(spanStart)
                     + -1 * layout.getParagraphDirection(startLine) * horizontalPadding).toInt()
-                // end can be on the left or on the right depending on the language direction.
-                val endOffset = (layout.getPrimaryHorizontal(spanEnd)
+            // end can be on the left or on the right depending on the language direction.
+            val endOffset = (layout.getPrimaryHorizontal(spanEnd)
                     + layout.getParagraphDirection(endLine) * horizontalPadding).toInt()
-
-                val renderer = if (startLine == endLine) singleLineRenderer else multiLineRenderer
-                renderer.draw(canvas, layout, startLine, endLine, startOffset, endOffset, Color.parseColor( (span as SpannableBackground).backgroundColor) )
-//            }
+            val renderer = if (startLine == endLine) singleLineRenderer else multiLineRenderer
+            renderer.draw(
+                canvas,
+                layout,
+                startLine,
+                endLine,
+                startOffset,
+                endOffset,
+                Color.parseColor((span as SpannableBackground).backgroundColor)
+            )
         }
     }
 }

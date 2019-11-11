@@ -29,19 +29,15 @@ import androidx.core.graphics.withTranslation
  *
  * See [TextRoundedBgAttributeReader] for supported attributes.
  */
-class RoundedBgTextView : AppCompatTextView {
+class RoundedBgTextView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = android.R.attr.textViewStyle
+) : AppCompatTextView(context, attrs, defStyleAttr) {
 
-    private var fontSize: Float = 0f
     private val textRoundedBgHelper: TextRoundedBgHelper
-    private var bgrColor = 0
 
-
-    @JvmOverloads
-    constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = android.R.attr.textViewStyle
-    ) : super(context, attrs, defStyleAttr) {
+    init {
         val attributeReader = TextRoundedBgAttributeReader(context, attrs)
         textRoundedBgHelper = TextRoundedBgHelper(
             horizontalPadding = attributeReader.horizontalPadding,
@@ -50,8 +46,6 @@ class RoundedBgTextView : AppCompatTextView {
             drawableLeft = attributeReader.drawableLeft,
             drawableMid = attributeReader.drawableMid,
             drawableRight = attributeReader.drawableRight,
-            bgrColor = attributeReader.bgroundColor,
-//            fontSize = sp(attributeReader.fontSize)
             fontSize = this@RoundedBgTextView.textSize
         )
     }
@@ -65,13 +59,6 @@ class RoundedBgTextView : AppCompatTextView {
             }
         }
         super.onDraw(canvas)
-    }
-
-    fun dp(int:Int):Float{
-        return (resources.displayMetrics.density*int)
-    }
-    fun sp(int:Int): Float {
-        return (resources.displayMetrics.scaledDensity*int)
     }
 
 }
