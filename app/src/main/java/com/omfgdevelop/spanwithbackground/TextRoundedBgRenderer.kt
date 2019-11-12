@@ -15,10 +15,10 @@
 */
 package com.omfgdevelop.spanwithbackground
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.text.Layout
 import kotlin.math.max
 import kotlin.math.min
@@ -27,16 +27,21 @@ import kotlin.math.roundToInt
 /**
  * Base class for single and multi line rounded background renderers.
  *
- * @param horizontalPadding the padding to be applied to left & right of the background
- * @param verticalPadding the padding to be applied to top & bottom of the background
+// * @param horizontalPadding the padding to be applied to left & right of the background
+// * @param verticalPadding the padding to be applied to top & bottom of the background
  */
 internal abstract class TextRoundedBgRenderer(
-    val horizontalPadding: Int,
-    val verticalPadding: Int,
-    private val fontSize: Float
+//    val horizontalPadding: Int,
+//    val verticalPadding: Int,
+    private val fontSize: Float,
+    private val context: Context
 ) {
 
-    companion object val extraPadding = 3
+    companion object val extraPadding = dp(2)
+
+    private fun dp(int: Int): Float {
+        return context.resources.displayMetrics.density* int
+    }
     /**
      * Draw the background that starts at the {@code startOffset} and ends at {@code endOffset}.
      *
@@ -54,7 +59,8 @@ internal abstract class TextRoundedBgRenderer(
         endLine: Int,
         startOffset: Int,
         endOffset: Int,
-        bgrColor: Int
+        bgrColor: Int,
+        extraSpace: Float
     )
 
     /**
@@ -65,7 +71,8 @@ internal abstract class TextRoundedBgRenderer(
      * @param line line number
      */
     protected fun getLineTop(layout: Layout, line: Int): Int {
-        return layout.getLineTopWithoutPadding(line) - verticalPadding + ((fontSize * 2) / 3).roundToInt()
+        return layout.getLineTopWithoutPadding(line)  + ((fontSize * 2) / 3).roundToInt()
+//        return layout.getLineTopWithoutPadding(line) - verticalPadding + ((fontSize * 2) / 3).roundToInt()
         //        return layout.getLineTopWithoutPadding(line) - verticalPadding
     }
 
@@ -77,23 +84,24 @@ internal abstract class TextRoundedBgRenderer(
      * @param line line number
      */
     protected fun getLineBottom(layout: Layout, line: Int): Int {
-        return layout.getLineBottomWithoutPadding(line) + verticalPadding
+        return layout.getLineBottomWithoutPadding(line)
     }
 }
 
 /**
  * Draws the background for text that starts and ends on the same line.
  *
- * @param horizontalPadding the padding to be applied to left & right of the background
- * @param verticalPadding the padding to be applied to top & bottom of the background
- * @param drawable the drawable used to draw the background
+// * @param horizontalPadding the padding to be applied to left & right of the background
+// * @param verticalPadding the padding to be applied to top & bottom of the background
+// * @param drawable the drawable used to draw the background
  */
 internal class SingleLineRenderer(
-    horizontalPadding: Int,
-    verticalPadding: Int,
-    val drawable: Drawable,
-    fontSize: Float
-) : TextRoundedBgRenderer(horizontalPadding, verticalPadding, fontSize) {
+//    horizontalPadding: Int,
+//    verticalPadding: Int,
+//    val drawable: Drawable,
+    fontSize: Float,
+    context: Context
+) : TextRoundedBgRenderer( fontSize,context) {
 
     override fun draw(
         canvas: Canvas,
@@ -102,7 +110,8 @@ internal class SingleLineRenderer(
         endLine: Int,
         startOffset: Int,
         endOffset: Int,
-        bgrColor: Int
+        bgrColor: Int,
+        extraSpace: Float
 
 
     ) {
@@ -115,27 +124,30 @@ internal class SingleLineRenderer(
         val right = max(startOffset, endOffset)
         val paint = Paint()
         paint.color = bgrColor
-        canvas.drawRect(Rect(left-extraPadding, lineTop, right+extraPadding, lineBottom), paint)
+        canvas.drawRect(Rect(
+            (left-extraPadding).toInt(), lineTop,
+            (right+extraPadding+extraSpace).toInt(), lineBottom), paint)
     }
 }
 
 /**
  * Draws the background for text that starts and ends on different lines.
  *
- * @param horizontalPadding the padding to be applied to left & right of the background
- * @param verticalPadding the padding to be applied to top & bottom of the background
- * @param drawableLeft the drawable used to draw left edge of the background
- * @param drawableMid the drawable used to draw for whole line
- * @param drawableRight the drawable used to draw right edge of the background
+// * @param horizontalPadding the padding to be applied to left & right of the background
+// * @param verticalPadding the padding to be applied to top & bottom of the background
+// * @param drawableLeft the drawable used to draw left edge of the background
+// * @param drawableMid the drawable used to draw for whole line
+// * @param drawableRight the drawable used to draw right edge of the background
  */
 internal class MultiLineRenderer(
-    horizontalPadding: Int,
-    verticalPadding: Int,
-    val drawableLeft: Drawable,
-    val drawableMid: Drawable,
-    val drawableRight: Drawable,
-    fontSize: Float
-) : TextRoundedBgRenderer(horizontalPadding, verticalPadding, fontSize) {
+
+
+//    val drawableLeft: Drawable,
+//    val drawableMid: Drawable,
+//    val drawableRight: Drawable,
+    fontSize: Float,
+    context: Context
+) : TextRoundedBgRenderer(  fontSize,context) {
 
     override fun draw(
         canvas: Canvas,
@@ -144,14 +156,15 @@ internal class MultiLineRenderer(
         endLine: Int,
         startOffset: Int,
         endOffset: Int,
-        bgrColor: Int
+        bgrColor: Int,
+        extraSpace: Float
     ) {
         // draw the first line
         val paragDir = layout.getParagraphDirection(startLine)
         val lineEndOffset = if (paragDir == Layout.DIR_RIGHT_TO_LEFT) {
-            layout.getLineLeft(startLine) - horizontalPadding
+            layout.getLineLeft(startLine)
         } else {
-            layout.getLineRight(startLine) + horizontalPadding
+            layout.getLineRight(startLine)
         }.toInt()
         var lineBottom = getLineBottom(layout, startLine)
         var lineTop = getLineTop(layout, startLine)
@@ -161,18 +174,14 @@ internal class MultiLineRenderer(
         for (line in startLine + 1 until endLine) {
             lineTop = getLineTop(layout, line)
             lineBottom = getLineBottom(layout, line)
-            drawableMid.setBounds(
-                (layout.getLineLeft(line).toInt() - horizontalPadding),
-                lineTop,
-                (layout.getLineRight(line).toInt() + horizontalPadding),
-                lineBottom
-            )
-            drawableMid.draw(canvas)
+            val paint = Paint()
+            paint.color = bgrColor
+            canvas.drawRect(Rect(layout.getLineLeft(line).toInt() , lineTop, layout.getLineRight(line).toInt(), lineBottom), paint)
         }
         val lineStartOffset = if (paragDir == Layout.DIR_RIGHT_TO_LEFT) {
-            layout.getLineRight(startLine) + horizontalPadding
+            layout.getLineRight(startLine)
         } else {
-            layout.getLineLeft(startLine) - horizontalPadding
+            layout.getLineLeft(startLine)
         }.toInt()
         // draw the last line
         lineBottom = getLineBottom(layout, endLine)
@@ -200,7 +209,7 @@ internal class MultiLineRenderer(
     ) {
         val paint = Paint()
         paint.color = bgrColor
-        canvas.drawRect(Rect(start+extraPadding, top, end, bottom), paint)
+        canvas.drawRect(Rect((start+extraPadding).toInt(), top, end, bottom), paint)
     }
 
     /**
@@ -222,6 +231,8 @@ internal class MultiLineRenderer(
     ) {
         val paint = Paint()
         paint.color = bgrColor
-        canvas.drawRect(Rect(start, top, end+extraPadding, bottom), paint)
+        canvas.drawRect(Rect(start, top, (end+extraPadding).toInt(), bottom), paint)
     }
+
+
 }

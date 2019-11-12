@@ -27,7 +27,6 @@ import androidx.core.graphics.withTranslation
  * A TextView that can draw rounded background to the portions of the text. See
  * [TextRoundedBgHelper] for more information.
  *
- * See [TextRoundedBgAttributeReader] for supported attributes.
  */
 class RoundedBgTextView @JvmOverloads constructor(
     context: Context,
@@ -35,21 +34,10 @@ class RoundedBgTextView @JvmOverloads constructor(
     defStyleAttr: Int = android.R.attr.textViewStyle
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
-    private val textRoundedBgHelper: TextRoundedBgHelper
-
-    init {
-        val attributeReader = TextRoundedBgAttributeReader(context, attrs)
-        textRoundedBgHelper = TextRoundedBgHelper(
-            horizontalPadding = attributeReader.horizontalPadding,
-            verticalPadding = attributeReader.verticalPadding,
-            drawable = attributeReader.drawable,
-            drawableLeft = attributeReader.drawableLeft,
-            drawableMid = attributeReader.drawableMid,
-            drawableRight = attributeReader.drawableRight,
-            fontSize = this@RoundedBgTextView.textSize
-        )
-    }
-
+    private val textRoundedBgHelper: TextRoundedBgHelper = TextRoundedBgHelper(
+        this@RoundedBgTextView.context,
+        fontSize =this@RoundedBgTextView.textSize
+    )
 
     override fun onDraw(canvas: Canvas) {
         // need to draw bg first so that text can be on top during super.onDraw()

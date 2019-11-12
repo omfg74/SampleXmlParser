@@ -15,9 +15,9 @@
 */
 package com.omfgdevelop.spanwithbackground
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.text.Layout
 import android.text.Spanned
 
@@ -35,40 +35,29 @@ import android.text.Spanned
  *
  * **Note:** BiDi text is not supported.
  *
- * @param horizontalPadding the padding to be applied to left & right of the background
- * @param verticalPadding the padding to be applied to top & bottom of the background
- * @param drawable the drawable used to draw the background
- * @param drawableLeft the drawable used to draw left edge of the background
- * @param drawableMid the drawable used to draw for whole line
- * @param drawableRight the drawable used to draw right edge of the background
+// * @param horizontalPadding the padding to be applied to left & right of the background
+// * @param verticalPadding the padding to be applied to top & bottom of the background
+// * @param drawable the drawable used to draw the background
+// * @param drawableLeft the drawable used to draw left edge of the background
+// * @param drawableMid the drawable used to draw for whole line
+// * @param drawableRight the drawable used to draw right edge of the background
  */
 class TextRoundedBgHelper(
-    val horizontalPadding: Int,
-    verticalPadding: Int,
-    drawable: Drawable,
-    drawableLeft: Drawable,
-    drawableMid: Drawable,
-    drawableRight: Drawable,
+    private val context: Context,
     fontSize: Float
 ) {
 
     private val singleLineRenderer: TextRoundedBgRenderer by lazy {
         SingleLineRenderer(
-            horizontalPadding = horizontalPadding,
-            verticalPadding = verticalPadding,
-            drawable = drawable,
-            fontSize = fontSize
+            fontSize = fontSize,
+            context = context
         )
     }
 
     private val multiLineRenderer: TextRoundedBgRenderer by lazy {
         MultiLineRenderer(
-            horizontalPadding = horizontalPadding,
-            verticalPadding = verticalPadding,
-            drawableLeft = drawableLeft,
-            drawableMid = drawableMid,
-            drawableRight = drawableRight,
-            fontSize = fontSize
+            fontSize = fontSize,
+            context = context
         )
     }
 
@@ -93,10 +82,10 @@ class TextRoundedBgHelper(
 
             // start can be on the left or on the right depending on the language direction.
             val startOffset = (layout.getPrimaryHorizontal(spanStart)
-                    + -1 * layout.getParagraphDirection(startLine) * horizontalPadding).toInt()
+                    + -1 * layout.getParagraphDirection(startLine) ).toInt()
             // end can be on the left or on the right depending on the language direction.
             val endOffset = (layout.getPrimaryHorizontal(spanEnd)
-                    + layout.getParagraphDirection(endLine) * horizontalPadding).toInt()
+                    + layout.getParagraphDirection(endLine) ).toInt()
             val renderer = if (startLine == endLine) singleLineRenderer else multiLineRenderer
             renderer.draw(
                 canvas,
@@ -105,8 +94,13 @@ class TextRoundedBgHelper(
                 endLine,
                 startOffset,
                 endOffset,
-                Color.parseColor((span as SpannableBackground).backgroundColor)
+                Color.parseColor((span as SpannableBackground).backgroundColor),
+                dp(span.extraSpace)
             )
         }
+    }
+
+    private fun dp(int:Int): Float {
+        return context.resources.displayMetrics.density* int
     }
 }

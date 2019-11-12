@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     tools:context=".MainActivity"
     android:orientation="vertical"
     >
@@ -25,6 +27,14 @@
         android:id="@+id/tv_span2"
         >
 
+
     </com.omfgdevelop.spanwithbackground.RoundedBgTextView>
+    <com.omfgdevelop.spanwithbackground.RoundedBgTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_spanOk"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        />
 
 </LinearLayout>

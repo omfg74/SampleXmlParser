@@ -19,7 +19,7 @@ class XmlParser(
     private val linkColor: Int
 ) {
     companion object {
-        private const val SHORT_WORD = 3
+        private const val SHORT_WORD = 4
     }
 
     fun parse(parsableText: String): SpannableStringBuilder? {
@@ -112,12 +112,14 @@ class XmlParser(
         chunk: TextChunk
 
     ): SpannableStringBuilder {
+        var extraSpace = 0
         if ((chunk.text?.length ?: 0) < SHORT_WORD) {
-            chunk.text =  chunk.text + " "
+            extraSpace = 3
+
         }
         sb.append(chunk.text)
         sb.setSpan(
-            SpannableBackground(chunk.attr?.get("color") ?: "#FFFFFF"),
+            SpannableBackground(chunk.attr?.get("color") ?: "#FFFFFF",extraSpace),
             0,
             (chunk.text?.length) ?: 0,
             Spanned.SPAN_INTERMEDIATE
@@ -175,6 +177,9 @@ class XmlParser(
         var text: String? = null,
         var attr: HashMap<String, String>? = null
     )
+
+
+
 
 
 }
